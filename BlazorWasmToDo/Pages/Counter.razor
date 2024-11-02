@@ -1,0 +1,6 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<div class="non-persistent-counter">
+    <p role="status">Non-persistent count: @CounterState.Value.ClickCount</p>
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+</div>

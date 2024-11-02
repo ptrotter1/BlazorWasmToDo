@@ -1,0 +1,18 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<div class="persistent-counter">
+    @if (CounterState.Value.IsLoading)
+    {
+        <p>Please wait, loading...</p>
+    }
+    else if (CounterState.Value.ErrorMessage != string.Empty)
+    {
+        <p style="color: red">@CounterState.Value.ErrorMessage</p>
+    }
+    else
+    {
+        <p>User Name: <input value="@CounterState.Value.UserName" @onchange="UserNameChangeHandler" /></p>
+        <p role="status">Persistent count: @CounterState.Value.ClickCount</p>
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>   
+    }
+</div>
