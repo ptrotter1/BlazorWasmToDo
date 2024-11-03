@@ -15,7 +15,7 @@ public partial class PersistentCounter
     [Inject]
     public IDispatcher Dispatcher { get; set; } = default!;
 
-    private string UserName { get; set; } = string.Empty;
+    private string? UserName { get; set; }
 
     protected override void OnInitialized()
     {
@@ -25,16 +25,14 @@ public partial class PersistentCounter
 
     private void UserNameChangeHandler(ChangeEventArgs obj)
     {
-        var userName = obj.Value?.ToString();
-        if (userName == null) return;
-        UserName = userName;
+        UserName = obj.Value?.ToString();
     }
     
     private void IncrementCount()
     {
         var action = new IncrementPersistentCounterAction 
         { 
-            UserName = UserName,
+            UserName = UserName ?? CounterState.Value.UserName,
             NextCount = CounterState.Value.ClickCount + 1
         };
         Dispatcher.Dispatch(action);

@@ -1,3 +1,3 @@
 namespace BlazorWasmToDo.Store.PersistentCounterUseCase.Actions;
 
-public class SavePersistentCounterDataFailureAction(Error Error);
+public record SavePersistentCounterDataFailureAction(Error Error);

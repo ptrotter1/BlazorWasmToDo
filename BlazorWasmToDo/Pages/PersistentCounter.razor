@@ -13,6 +13,6 @@
     {
         <p>User Name: <input value="@CounterState.Value.UserName" @onchange="UserNameChangeHandler" /></p>
         <p role="status">Persistent count: @CounterState.Value.ClickCount</p>
-        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>   
+        <button class="btn btn-primary" @onclick="IncrementCount" disabled="@CounterState.Value.IsSaving">Click me</button>   
     }
 </div>

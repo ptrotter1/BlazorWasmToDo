@@ -1,6 +1,5 @@
 using BlazorWasmToDo.Services;
 using BlazorWasmToDo.Services.Models;
-using BlazorWasmToDo.Store.CounterUseCase;
 using BlazorWasmToDo.Store.PersistentCounterUseCase.Actions;
 using CSharpFunctionalExtensions;
 using Fluxor;
@@ -29,8 +28,9 @@ public class Effects
         IDispatcher dispatcher)
     {
         await MapActionToCounterData(action)
-            .Tap(data => _persistentCounterDataService.SavePersistentCounterData(data))
-            .MapError(error => new SavePersistentCounterDataFailureAction(error));
+            .Bind(data => _persistentCounterDataService.SavePersistentCounterData(data))
+            .Tap(() => dispatcher.Dispatch(new SavePersistentCounterDataSuccessAction()))
+            .TapError(error => dispatcher.Dispatch(new SavePersistentCounterDataFailureAction(error)));
     }
 
     private static Result<CounterData, Error> MapActionToCounterData(IncrementPersistentCounterAction action)

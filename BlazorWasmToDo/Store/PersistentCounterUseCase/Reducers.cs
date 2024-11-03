@@ -12,6 +12,7 @@ public static class Reducers
         IncrementPersistentCounterAction action) 
         => state with
         {
+            IsSaving = true,
             ClickCount = state.ClickCount + 1,
             UserName = action.UserName
         };
@@ -58,5 +59,22 @@ public static class Reducers
         {
             ErrorMessage = action.Error.ToString(),
             IsLoading = false
+        };
+
+    [ReducerMethod]
+    public static PersistentCounterState ReduceSavePersistentCounterDataSuccessAction(PersistentCounterState state,
+        SavePersistentCounterDataSuccessAction action)
+        => state with
+        {
+            IsSaving = false
+        };
+
+    [ReducerMethod]
+    public static PersistentCounterState ReduceSavePersistentCounterDataFailureAction(PersistentCounterState state,
+        SavePersistentCounterDataFailureAction action)
+        => state with
+        {
+            IsSaving = false,
+            ErrorMessage = action.Error.ToString()
         };
 }

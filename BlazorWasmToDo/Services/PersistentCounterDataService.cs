@@ -18,7 +18,8 @@ public class PersistentCounterDataService : IPersistentCounterDataService
         CounterData data;
         try
         {
-            await Task.Delay(TimeSpan.FromSeconds(3));
+            // Simulate a network delay
+            await Task.Delay(500);
             data = await _localStorageService.GetItemAsync<CounterData>("MyKey") ?? 
                    new CounterData();
         }
@@ -35,7 +36,12 @@ public class PersistentCounterDataService : IPersistentCounterDataService
     {
         try
         {
-            await Task.Delay(TimeSpan.FromSeconds(3));
+            // Simulate a network delay
+            await Task.Delay(250);
+            
+            // Test throwing an Exception
+            throw new Exception("Something went wrong");
+            
             await _localStorageService.SetItemAsync("MyKey", data);
         }
         catch (Exception ex)
