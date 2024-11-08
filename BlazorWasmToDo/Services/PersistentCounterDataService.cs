@@ -40,7 +40,7 @@ public class PersistentCounterDataService : IPersistentCounterDataService
             await Task.Delay(250);
             
             // Test throwing an Exception
-            throw new Exception("Something went wrong");
+            //throw new Exception("Something went wrong");
             
             await _localStorageService.SetItemAsync("MyKey", data);
         }

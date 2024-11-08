@@ -4,7 +4,7 @@ using Fluxor;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorWasmToDo.Pages;
+namespace BlazorWasmToDo.Components;
 
 [UsedImplicitly]
 public partial class Counter
