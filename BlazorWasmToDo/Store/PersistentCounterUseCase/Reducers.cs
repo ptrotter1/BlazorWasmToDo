@@ -1,6 +1,4 @@
-using BlazorWasmToDo.Services.Models;
 using BlazorWasmToDo.Store.PersistentCounterUseCase.Actions;
-using CSharpFunctionalExtensions;
 using Fluxor;
 
 namespace BlazorWasmToDo.Store.PersistentCounterUseCase;
@@ -29,28 +27,13 @@ public static class Reducers
     [ReducerMethod]
     public static PersistentCounterState ReduceFetchPersistentCounterDataSuccessAction(PersistentCounterState state,
         FetchPersistentCounterDataSuccessAction action)
-        => MapPersistentCounterDataToState(action.Data)
-            .MapError(msg => new PersistentCounterState { ErrorMessage = msg.ToString() })
-            .Finally(msg => msg.Value);
-
-    private static Result<PersistentCounterState, Error> MapPersistentCounterDataToState(CounterData counterData)
-    {
-        try
+        => state with
         {
-            return new PersistentCounterState
-            {
-                ClickCount = counterData.ClickCount,
-                UserName = counterData.UserName,
-                IsLoading = false,
-                ErrorMessage = string.Empty
-            };
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return new Error { Code = "CouldNotMap", Message = e.Message };
-        }
-    }
+            ClickCount = action.Data.ClickCount,
+            UserName = action.Data.UserName,
+            IsLoading = false,
+            ErrorMessage = string.Empty
+        };
     
     [ReducerMethod]
     public static PersistentCounterState ReduceFetchPersistentCounterDataFailureAction(PersistentCounterState state,
