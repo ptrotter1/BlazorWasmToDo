@@ -1,0 +1,38 @@
+@page "/todo-advanced-validation"
+@implements IDisposable
+
+<h1>To Do</h1>
+
+<EditForm Model="FormModel" OnSubmit="SubmitHandler" FormName="NewToDoForm">
+    <InputText @bind-Value="FormModel.Text" />
+    <InputDate TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate" />
+</EditForm>
+
+@code {
+    private ToDoFormModel FormModel { get; set; } = default!;
+    private EditContext FormEditContext { get; set; } = default!;
+    private ValidationMessageStore MessageStore { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        FormModel = new ToDoFormModel();
+        FormEditContext = new EditContext(FormModel);
+        FormEditContext.OnValidationRequested += ValidationRequestedHandler;
+        MessageStore = new ValidationMessageStore(FormEditContext);
+    }
+
+    private void ValidationRequestedHandler(object? sender, ValidationRequestedEventArgs e)
+    {
+        MessageStore.Clear();
+    }
+
+    private void SubmitHandler()
+    {
+        
+    }
+    
+    public void Dispose()
+    {
+        FormEditContext.OnValidationRequested -= ValidationRequestedHandler;
+    }
+}
