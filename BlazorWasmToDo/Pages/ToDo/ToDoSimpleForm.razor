@@ -1,0 +1,47 @@
+@page "/todo-simpleform"
+@inject IJSRuntime JsRuntime
+
+<form method="post">
+    <div class="form-group mb-3">
+        <label for="text">ToDo Text</label>
+        <input type="text" class="form-control" id="text" name="text" @bind="Text"/>    
+    </div>
+    
+    <div class="form-group mb-3">
+        <label for="dueDate">Due Date</label>
+        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" @bind="DueDate"/>    
+    </div>
+    
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+@code {
+    private string Text { get; set; } = string.Empty;
+    private DateTime DueDate { get; set; } = DateTime.Today.AddDays(1);
+    
+    private async Task SubmitHandler(EventArgs obj)
+    {
+        Console.WriteLine("SubmitHandler called");
+        Console.WriteLine($"Text: {Text}");
+        Console.WriteLine($"DueDate: {DueDate}");
+        
+        if (string.IsNullOrWhiteSpace(Text))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "The ToDo text cannot be blank.");
+            return;
+        }
+        
+        if (DueDate < DateTime.Today)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "The Due Date must be in the future.");
+            return;
+        }
+        
+        ProcessForm();
+    }
+
+    private void ProcessForm()
+    {
+        // Do the rest of the processing here
+    }
+}

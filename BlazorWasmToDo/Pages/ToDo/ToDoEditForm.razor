@@ -1,23 +1,25 @@
-@page "/todo-advanced-validation"
+@page "/todo-editform"
+@using BlazorWasmToDo.Pages.ToDo.Models
 @implements IDisposable
 
 <h1>To Do</h1>
-
-@*<EditForm Model="FormModel" OnSubmit="SubmitHandler" FormName="NewToDoForm">
-    <ValidationSummary />
     
-    <InputText @bind-Value="FormModel.Text"/>
-    <InputDate TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate"/>
-    <button class="btn btn-primary" type="submit">Submit</button>
-</EditForm>*@
-
 @* Don't forget to set your EditContext *@
-<EditForm Model="FormEditContext" OnSubmit="SubmitHandler" FormName="NewToDoForm">
-    <ValidationSummary />
-    <DataAnnotationsValidator /> @* not sure why this is also required *@
+<EditForm EditContext="FormEditContext" OnSubmit="SubmitHandler" FormName="NewToDoForm">
+    <ValidationSummary/>
+    <DataAnnotationsValidator/> @* not sure why this is also required when not using data annotations... *@
 
-    <InputText @bind-Value="FormModel.Text"/>
-    <InputDate TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate"/>
+    <div class="form-group mb-3">
+        <label>ToDo Text</label>
+        <InputText class="form-control" @bind-Value="FormModel.Text"/>
+    </div>
+
+    <div class="form-group">
+        <label>Due Date</label>
+        @* why is TValue required here? *@
+        <InputDate class="form-control" TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate"/>
+    </div>
+
     <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
 
@@ -30,7 +32,7 @@
     {
         FormModel = new ToDoFormModel();
         FormEditContext = new EditContext(FormModel);
-        FormEditContext.OnValidationRequested += ValidationRequestedHandler;
+        //FormEditContext.OnValidationRequested += ValidationRequestedHandler;
         MessageStore = new ValidationMessageStore(FormEditContext);
     }
 
@@ -41,6 +43,19 @@
         if (string.IsNullOrWhiteSpace(FormModel.Text))
         {
             MessageStore.Add(() => FormModel.Text, "The ToDo text cannot be blank.");
+        }
+        
+        if (FormModel.DueDate == null)
+        {
+            MessageStore.Add(() => FormModel.DueDate!, "The Due Date cannot be blank.");
+        }
+        else if (FormModel.DueDate < DateTimeOffset.Now)
+        {
+            MessageStore.Add(() => FormModel.DueDate, "The Due Date must be in the future.");
+        }
+        else if (FormModel.DueDate.Value.DayOfWeek == DayOfWeek.Tuesday)
+        {
+            MessageStore.Add(() => FormModel.DueDate, "Due Date cannot be on a Tuesday.");
         }
         
         StateHasChanged();

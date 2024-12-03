@@ -1,0 +1,33 @@
+﻿@page "/todo-modelbind"
+@using BlazorWasmToDo.Pages.ToDo.Models
+
+<form method="post" @onsubmit="SubmitHandler">
+    <div class="form-group mb-3">
+        <label for="text">ToDo Text</label>
+        <InputText class="form-control" id="text" name="text" @bind-Value="FormModel!.Text"/>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="dueDate">Due Date</label>
+        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" @bind="FormModel!.DueDate"/>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+@code {
+    [SupplyParameterFromForm]
+    private ToDoFormModel? FormModel { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        FormModel ??= new ToDoFormModel();
+    }
+
+    private void SubmitHandler()
+    {
+        Console.WriteLine("SubmitHandler called");
+        Console.WriteLine($"Text: {FormModel!.Text}");
+        Console.WriteLine($"DueDate: {FormModel!.DueDate}");
+    }
+}
