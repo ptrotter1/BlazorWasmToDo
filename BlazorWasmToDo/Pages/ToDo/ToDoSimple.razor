@@ -1,5 +1,14 @@
 @page "/todo"
 
+@*<EditForm Model="FormModel" OnSubmit="SubmitHandler" FormName="NewToDoForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText @bind-Value="FormModel.Text"/>
+    <InputDate TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate"/>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>*@
+
 @code {
     
 }

@@ -3,9 +3,22 @@
 
 <h1>To Do</h1>
 
-<EditForm Model="FormModel" OnSubmit="SubmitHandler" FormName="NewToDoForm">
-    <InputText @bind-Value="FormModel.Text" />
-    <InputDate TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate" />
+@*<EditForm Model="FormModel" OnSubmit="SubmitHandler" FormName="NewToDoForm">
+    <ValidationSummary />
+    
+    <InputText @bind-Value="FormModel.Text"/>
+    <InputDate TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate"/>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>*@
+
+@* Don't forget to set your EditContext *@
+<EditForm Model="FormEditContext" OnSubmit="SubmitHandler" FormName="NewToDoForm">
+    <ValidationSummary />
+    <DataAnnotationsValidator /> @* not sure why this is also required *@
+
+    <InputText @bind-Value="FormModel.Text"/>
+    <InputDate TValue="DateTimeOffset?" @bind-Value="FormModel.DueDate"/>
+    <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
 
 @code {
@@ -24,11 +37,38 @@
     private void ValidationRequestedHandler(object? sender, ValidationRequestedEventArgs e)
     {
         MessageStore.Clear();
+
+        if (string.IsNullOrWhiteSpace(FormModel.Text))
+        {
+            MessageStore.Add(() => FormModel.Text, "The ToDo text cannot be blank.");
+        }
+        
+        StateHasChanged();
     }
 
+    // If a handler for OnSubmit is supplied, we cannot also provide a handler for OnInvalidSubmit or OnValidSubmit
     private void SubmitHandler()
     {
-        
+        Console.WriteLine("SubmitHandler called");
+
+        if (FormEditContext.Validate())
+        {
+            Console.WriteLine("Form is valid");
+        }
+        else
+        {
+            Console.WriteLine("Form is invalid");
+        }
+    }
+    
+    private void InvalidSubmitHandler()
+    {
+        Console.WriteLine("InvalidSubmitHandler called");
+    }
+    
+    private void ValidSubmitHandler()
+    {
+        Console.WriteLine("ValidSubmitHandler called");
     }
     
     public void Dispose()
