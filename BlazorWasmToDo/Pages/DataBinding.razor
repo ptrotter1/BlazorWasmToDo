@@ -3,25 +3,25 @@
 <form method="post" @onsubmit="SubmitHandler">
     <div class="form-group mb-3">
         <label>On Change</label>
-        <input class="form-control" type="text" @onchange="OnChangeHandler"/>
+        <input class="form-control mb-1" type="text" @onchange="OnChangeHandler"/>
         <input class="form-control" type="text" value="@OnChangeValue" />
     </div>
 
     <div class="form-group mb-3">
         <label>Two-way</label>
-        <input class="form-control" type="text" @bind="TwoWayValue"/>
+        <input class="form-control mb-1" type="text" @bind="TwoWayValue"/>
         <input class="form-control" type="text" @bind="TwoWayValue"/>
     </div>
     
     <div class="form-group mb-3">
         <label>On Input</label>
-        <input class="form-control" type="text" @oninput="OnInputHandler"/>
+        <input class="form-control mb-1" type="text" @oninput="OnInputHandler"/>
         <input class="form-control" type="text" value="@OnInputValue" />
     </div>
 
     <div class="form-group mb-3">
         <label>Two-way on input</label>
-        <InputTextBindValueOnInput class="form-control" @bind-Value="@OnInputTwoWayValue"/>
+        <InputTextBindValueOnInput class="form-control mb-1" @bind-Value="@OnInputTwoWayValue"/>
         <InputTextBindValueOnInput class="form-control" @bind-Value="@OnInputTwoWayValue"/>
     </div>
     
